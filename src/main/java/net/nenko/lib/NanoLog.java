@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * NanoLog - minimalistic lean logger
+ * v0.01
+ */
 public class NanoLog {
 	private static final DateTimeFormatter FORMATTER_SIMPLE = DateTimeFormatter.ofPattern("yyMMdd HHmmss");
 	private static final DateTimeFormatter FORMATTER_COMPLEX = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
