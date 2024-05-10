@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * NanoLog - minimalistic lean logger
- * v0.01
+ * v1.01
  */
 public class NanoLog {
 	private static final DateTimeFormatter FORMATTER_SIMPLE = DateTimeFormatter.ofPattern("yyMMdd HHmmss");
