@@ -29,4 +29,5 @@ public class NanoLogTest {
         log3.info("log.info() with arguments {} {} {} {}", "arg1", 123, true, "complex-style-arg4");
         assertTrue(true);
     }
+
 }

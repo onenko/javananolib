@@ -38,8 +38,8 @@ public class NanoLog {
 	}
 
 	public void error(String format) {
-		if(LogLevel.ERROR.isEnabled(level)) {
-			String record = style.buildRecord(format, LogLevel.ERROR, DUMMY_ARG_ARRAY);
+		if(SeverityLevel.ERROR.isEnabled(level)) {
+			String record = style.buildRecord(format, SeverityLevel.ERROR, DUMMY_ARG_ARRAY);
 			writeRecord(record);
 		}
 	}
@@ -54,75 +54,75 @@ public class NanoLog {
 				Object[] newArguments = new Object[arguments.length - 1];
 				// Copy elements except the last one
 				System.arraycopy(arguments, 0, newArguments, 0, newArguments.length);
-				String record = style.buildRecord(format, LogLevel.ERROR, newArguments) + throwableInfo;
+				String record = style.buildRecord(format, SeverityLevel.ERROR, newArguments) + throwableInfo;
 				writeRecord(record);
 				return;
 			}
 		}
-		String record = style.buildRecord(format, LogLevel.ERROR, arguments);
+		String record = style.buildRecord(format, SeverityLevel.ERROR, arguments);
 		writeRecord(record);
 	}
 
 	public void warn(String format) {
-		if(LogLevel.WARN.isEnabled(level)) {
-			String record = style.buildRecord(format, LogLevel.WARN, DUMMY_ARG_ARRAY);
+		if(SeverityLevel.WARN.isEnabled(level)) {
+			String record = style.buildRecord(format, SeverityLevel.WARN, DUMMY_ARG_ARRAY);
 			writeRecord(record);
 		}
 	}
 
 	public void warn(String format, Object... arguments) {
-		String record = style.buildRecord(format, LogLevel.WARN, arguments);
+		String record = style.buildRecord(format, SeverityLevel.WARN, arguments);
 		writeRecord(record);
 	}
 
 	public void info(String format) {
-		if(LogLevel.INFO.isEnabled(level)) {
-			String record = style.buildRecord(format, LogLevel.INFO, DUMMY_ARG_ARRAY);
+		if(SeverityLevel.INFO.isEnabled(level)) {
+			String record = style.buildRecord(format, SeverityLevel.INFO, DUMMY_ARG_ARRAY);
 			writeRecord(record);
 		}
 	}
 
 	public void info(String format, Object... arguments) {
-		if(LogLevel.INFO.isEnabled(level)) {
-			String record = style.buildRecord(format, LogLevel.INFO, arguments);
+		if(SeverityLevel.INFO.isEnabled(level)) {
+			String record = style.buildRecord(format, SeverityLevel.INFO, arguments);
 			writeRecord(record);
 		}
 	}
 
 	public void always(String format) {
-		String record = style.buildRecord(format, LogLevel.INFO, DUMMY_ARG_ARRAY);
+		String record = style.buildRecord(format, SeverityLevel.INFO, DUMMY_ARG_ARRAY);
 		writeRecord(record);
 	}
 
 	public void always(String format, Object... arguments) {
-		String record = style.buildRecord(format, LogLevel.INFO, arguments);
+		String record = style.buildRecord(format, SeverityLevel.INFO, arguments);
 		writeRecord(record);
 	}
 
 	public void debug(String format) {
-		if(LogLevel.DEBUG.isEnabled(level)) {
-			String record = style.buildRecord(format, LogLevel.DEBUG, DUMMY_ARG_ARRAY);
+		if(SeverityLevel.DEBUG.isEnabled(level)) {
+			String record = style.buildRecord(format, SeverityLevel.DEBUG, DUMMY_ARG_ARRAY);
 			writeRecord(record);
 		}
 	}
 
 	public void debug(String format, Object... arguments) {
-		if(LogLevel.DEBUG.isEnabled(level)) {
-			String record = style.buildRecord(format, LogLevel.DEBUG, arguments);
+		if(SeverityLevel.DEBUG.isEnabled(level)) {
+			String record = style.buildRecord(format, SeverityLevel.DEBUG, arguments);
 			writeRecord(record);
 		}
 	}
 
 	public void trace(String format) {
-		if(LogLevel.TRACE.isEnabled(level)) {
-			String record = style.buildRecord(format, LogLevel.TRACE, DUMMY_ARG_ARRAY);
+		if(SeverityLevel.TRACE.isEnabled(level)) {
+			String record = style.buildRecord(format, SeverityLevel.TRACE, DUMMY_ARG_ARRAY);
 			writeRecord(record);
 		}
 	}
 
 	public void trace(String format, Object... arguments) {
-		if(LogLevel.TRACE.isEnabled(level)) {
-			String record = style.buildRecord(format, LogLevel.TRACE, arguments);
+		if(SeverityLevel.TRACE.isEnabled(level)) {
+			String record = style.buildRecord(format, SeverityLevel.TRACE, arguments);
 			writeRecord(record);
 		}
 	}
@@ -156,7 +156,7 @@ public class NanoLog {
 	public enum LogStyle {
 		CMD_LINE {
 			@Override
-			public String buildRecord(String template, LogLevel severity, Object[] args) {
+			public String buildRecord(String template, SeverityLevel severity, Object[] args) {
 				StringBuilder sb = new StringBuilder(template.length() + args.length * 10);
 				if(args.length == 0) {
 					sb.append(template);
@@ -169,7 +169,7 @@ public class NanoLog {
 		},
 		SIMPLE {
 			@Override
-			public String buildRecord(String template, LogLevel severity, Object[] args) {
+			public String buildRecord(String template, SeverityLevel severity, Object[] args) {
 				StringBuilder sb = new StringBuilder(template.length() + args.length * 10);
 				LocalDateTime now = LocalDateTime.now();
 				String formattedDateTime;
@@ -187,7 +187,7 @@ public class NanoLog {
 		},
 		COMPLEX {
 			@Override
-			public String buildRecord(String template, LogLevel severity, Object[] args) {
+			public String buildRecord(String template, SeverityLevel severity, Object[] args) {
 				StringBuilder sb = new StringBuilder(template.length() + args.length * 10);
 				LocalDateTime now = LocalDateTime.now();
 				String formattedDateTime;
@@ -203,10 +203,21 @@ public class NanoLog {
 				return sb.toString();
 			}
 		};
-		public abstract String buildRecord(String template, LogLevel severity, Object[] args);
+		public abstract String buildRecord(String template, SeverityLevel severity, Object[] args);
 	};
 
-	public static enum LogLevel {
+    public static enum LogLevel {
+        WARN(3),
+        INFO(4),
+        DEBUG(5),
+        TRACE(6);
+        private LogLevel(int lvl) {
+            this.lvl = lvl;
+        }
+        private int lvl;
+    }
+
+    public static enum SeverityLevel {
 		ALWAYS(0),	// printed despite current logging level
 		FATAL(1),
 		ERROR(2),
@@ -215,13 +226,13 @@ public class NanoLog {
 		DEBUG(5),
 		TRACE(6);
 		private int lvl;
-	
-		private LogLevel(int lvl) {
+
+		private SeverityLevel(int lvl) {
 			this.lvl = lvl;
 		}
-		
-		public boolean isEnabled(LogLevel thresholdLevel) {
-			return this.lvl <= thresholdLevel.lvl;
+
+		public boolean isEnabled(LogLevel logLevel) {
+			return this.lvl <= logLevel.lvl;
 		}
 	};
 
