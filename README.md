@@ -16,6 +16,6 @@ Classes are compilable with Java 8 and do not require extra 3rd-party dependenci
 ## Content
 
 - ```net.nenko.lib.NanoLog``` - minimalistic lean logger
-
+- ```net.nenko.lib.NanoArgsParser``` - simple command line arguments parser
 
 
