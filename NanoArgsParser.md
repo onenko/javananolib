@@ -2,7 +2,7 @@
 
 - being used only once during an application start, this parser object is NOT reusable;
 - when created, it is equipped with an array of possible options descriptions;
-- an option can be boolean (flag), or having a value, required or optional (with default value);
+- an option can be boolean (flag), or having a string value, default can be specified;
 - options are marked with dash '-' sign;
 - after the parsing of argv array, all the options and their values are extracted from the array;
 - values and states of options are placed in the option descriptions;
@@ -10,17 +10,19 @@
 
 ### Example
 ```
-Option optPassword = new Option("p", NanoArgsParser.REQUIRED, "<password>", "sets the password for encryption");
+Option optPassword = new Option("p", null, "<password>", "sets the password for encryption");
+Option optOutput = new Option("o", null, "<output-file>", "specifies the file to save the output");
 Option optVerbose = new Option("v", NanoArgsParser.FLAG, null, "if set, activates verbose logging of the operations");
 Option optHelp = new Option("h", NanoArgsParser.FLAG, null, "displays command line format and list of options");
-Option[] options = new Option[] {optPassword, optVerbose, optHelp };
+Option[] options = new Option[] {optPassword, optOutput, optVerbose, optHelp };
 NanoArgsParser parser = new NanoArgsParser(options);
 ```
 We provide:
-- required password option, in the form ```-p password```
+- password option, without default, in the form ```-p password```
+- output file option, with default value specified
 - optional verbose logging flag, in the form ```-v```
 - optional help flag, in the form ```-h```
-Then we create option array of above 3 items, and pass it to the constructor of NanoArgsParser.
+Then we create option array of above 4 items, and pass it to the constructor of NanoArgsParser.
 
 How the arguments parsed:
 ```
